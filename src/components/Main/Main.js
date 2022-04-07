@@ -1,9 +1,7 @@
 import './main.css';
 import Home from '../Home/Home';
 import Films from '../Films/Films';
-import Film from '../Film/Film';
 import People from '../People/People';
-import Person from '../Person/Person';
 import Planets from '../Planets/Planets';
 import Planet from '../Planet/Planet';
 import { Routes, Route, useLocation } from 'react-router-dom';
@@ -41,19 +39,24 @@ export default function Main(props) {
     return (
       <div className="mainContent">
         <Routes>
-            <Route path="/films/*" element={<Films list={films} />}>
-                <Route path=":id" element={<Film list={films} />} />
+            <Route path="/films/" element={<Films list={films} />}>
+                <Route path=":id" element={<Films list={films} />}/>
             </Route>
 
-            <Route path="/planets/*" element={<Planets list={planets}/>} />
-                <Route path=":id" element={<Planet list={planets} />} >
+            <Route path="/people/" element={ <People list={people} />} >
+                <Route path=":id" element={<People list={people} />} />
             </Route>
 
-            <Route path="/people/*" element={ <People list={people} />} >
-                <Route path=":id" element={<Person list={people} />} />
+            <Route path="/planets/*" element={<Planets list={planets}/>} >
+                <Route path=":id" element={<Planet list={planets} />} />
             </Route>
+
             <Route path="/" exact element={ <Home /> }/>
+            <Route path="*" exact element={ <Home /> }/>
         </Routes>
       </div>
     );
 }
+
+
+// episode 15

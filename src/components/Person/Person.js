@@ -1,15 +1,12 @@
-import { useParams } from 'react-router-dom';
 
-export default function Person({ list }) {
-  const { id } = useParams();
-  //synchronous search through the list array
-  let person = list.find((item, index) => parseInt(id) === index + 1);
+export default function Person({ person }) {
 
   return (
     <div>
-      <h2>Person Details {id}</h2>
-      {person && <p>{person.name}</p>}
-      {person && <p>{person.birth_year}</p>}
+      <h2>Person Details</h2>
+      {person && <p className="details-text">Name: {person.name}</p>}
+      {person && <p className="details-text">Gender: {person.gender}</p>}
+      {person && <p className="details-text">Year of birth: {person.birth_year}</p>}
     </div>
   );
 }

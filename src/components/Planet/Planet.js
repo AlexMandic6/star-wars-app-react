@@ -1,10 +1,13 @@
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import './planet.css';
 
-export default function Planet(props) {
+export default function Planet({planet}) {
+
     return (
-        <div>
-        <p>Details about a specific Planet</p>
+        <div className="details">
+            <h2>Planet details</h2>
+            {planet && <p className="details-text">Diameter: {planet.diameter}</p>}
+            {planet && <p className="details-text">Climate: {planet.climate}</p>}
+            {planet && <p className="details-text">Terrain: {planet.terrain}</p>}
         </div>
     );
 }

@@ -15,3 +15,7 @@
     padding: 1rem;
     min-height: 40vh;
 }
+
+.activeLink {
+    text-decoration: none;
+}
