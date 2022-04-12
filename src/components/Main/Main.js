@@ -1,62 +1,59 @@
 import './main.css';
 import Home from '../Home/Home';
-import Films from '../Films/Films';
-import People from '../People/People';
-import Planets from '../Planets/Planets';
-import Planet from '../Planet/Planet';
-import { Routes, Route, useLocation } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { lazy, Suspense, useEffect } from 'react';
+import Spinner from '../Spinner/Spinner';
+import useStarWars from '../../hooks/useStarWars';
 
 export default function Main(props) {
-    //we could put state here to hold the list to share with children
-    const { pathname } = useLocation();
-    const { keyword } = props;
-    const [people, setPeople] = useState([]); //list of people
-    const [planets, setPlanets] = useState([]); //list of planets
-    const [films, setFilms] = useState([]); //list of films
+    //lazy loading these components
+    const Films = lazy(()=> import('../Films/Films'));
+    const People = lazy(()=> import('../People/People'));
+    const Planets = lazy(()=> import('../Planets/Planets'));
+    const Planet = lazy(()=> import('../Planet/Planet'));
+
+
+    const { keyword, category } = props;
+    const [people, setPeople] = useStarWars('people'); //list of people
+    const [planets, setPlanets] = useStarWars('planets'); //list of planets
+    const [films, setFilms] = useStarWars('films'); //list of films
 
     useEffect(() => {
-        (async function () {
-          let url = 'https://swapi.dev/api';
-          if (pathname.indexOf('/people') > -1) {
-            let resp = await fetch(`${url}/people?search=${keyword}`);
-            let data = await resp.json();
-            setPeople(data.results);
-          }
-          if (pathname.indexOf('/films') > -1) {
-            let resp = await fetch(`${url}/films?search=${keyword}`);
-            let data = await resp.json();
-            setFilms(data.results);
-          }
-          if (pathname.indexOf('/planets') > -1) {
-            let resp = await fetch(`${url}/planets?search=${keyword}`);
-            let data = await resp.json();
-            setPlanets(data.results);
-          }
-        })();
-    }, [pathname, keyword]); //run this each time the route changes
+        switch (category) {
+          case 'people':
+            setPeople(keyword);
+            break;
+          case 'films':
+            setFilms(keyword);
+            break;
+          case 'planets':
+            setPlanets(keyword);
+            break;
+          default:
+        }
+        // window.scrollTo(0, 0); //seems like we dont need this?
+      }, [category, keyword, setPeople, setFilms, setPlanets]); //run this each time the route changes
   
     return (
       <div className="mainContent">
-        <Routes>
-            <Route path="/films/" element={<Films list={films} />}>
-                <Route path=":id" element={<Films list={films} />}/>
-            </Route>
+        <Suspense fallback={<Spinner>Loading...</Spinner>}>
+            <Routes>
+                <Route path="/films/" element={<Films list={films} />}>
+                    <Route path=":id" element={<Films list={films} />}/>
+                </Route>
 
-            <Route path="/people/" element={ <People list={people} />} >
-                <Route path=":id" element={<People list={people} />} />
-            </Route>
+                <Route path="/people/" element={ <People list={people} />} >
+                    <Route path=":id" element={<People list={people} />} />
+                </Route>
 
-            <Route path="/planets/*" element={<Planets list={planets}/>} >
-                <Route path=":id" element={<Planet list={planets} />} />
-            </Route>
+                <Route path="/planets/*" element={<Planets list={planets}/>} >
+                    <Route path=":id" element={<Planet list={planets} />} />
+                </Route>
 
-            <Route path="/" exact element={ <Home /> }/>
-            <Route path="*" exact element={ <Home /> }/>
-        </Routes>
+                <Route path="/" exact element={ <Home /> }/>
+                <Route path="*" exact element={ <Home /> }/>
+            </Routes>
+        </Suspense>
       </div>
     );
 }
-
-
-// episode 15

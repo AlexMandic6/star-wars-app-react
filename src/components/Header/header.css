@@ -8,8 +8,8 @@
 }
 
 h1 {
-    padding: 1rem 2rem;
-    flex-basis: 38vw;
+    padding: 1rem 2rem 1rem 6rem;
+    flex-basis: 28vw;
     flex-grow: 0;
     flex-shrink: 1;
 }

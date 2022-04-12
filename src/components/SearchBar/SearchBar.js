@@ -1,14 +1,17 @@
 import './searchBar.css';
 import { createRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function SearchBar(props) {
-    const {keyword, saveSearch } = props;
+    const {keyword, category } = props;
     let inputRef = createRef();  // container for a DOM element
+    const navigate = useNavigate();
 
     function submitted(e) {
         e.preventDefault();
-        saveSearch(inputRef.current.value);
-    } 
+        navigate(`/${category}?search=${inputRef.current.value}`);
+        // saveSearch(inputRef.current.value);
+    }
 
     useEffect(() => {
         //initial load plus if keyword in App changes

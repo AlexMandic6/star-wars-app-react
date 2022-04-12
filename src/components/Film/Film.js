@@ -1,4 +1,14 @@
+import { useFav } from "../../context/FavContext";
+import { useParams } from 'react-router-dom';
+
 export default function Film({ film }) {
+    const { id } = useParams();
+    // eslint-disable-next-line no-unused-vars
+    const [fav, updateFav] = useFav();
+
+    function clicked(e) {
+        updateFav('films', parseInt(id), film);
+    }
 
     let details = (
       <>
@@ -9,9 +19,10 @@ export default function Film({ film }) {
     );
   
     return (
-      <div className="details">
+      <div className="details"> 
         <h2>Film Details</h2>
         {film && details}
+        <button className="fav-btn" onClick={clicked}>Set as fav <span className="material-icons fav">favorite</span></button>
       </div>
     );
 }

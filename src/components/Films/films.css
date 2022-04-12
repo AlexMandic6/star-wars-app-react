@@ -5,3 +5,24 @@ a {
 .activeLink.active {
     color: orangered;
 }
+
+.fav {
+    position: relative;
+    top: 3px;
+    font-size: 20px;
+}
+
+.fav-btn {
+    margin-top: 3rem;
+    cursor: pointer;
+    font-size: 1.2rem;
+    background-color: rgba(226, 226, 226, 0.9);
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    transition: all 0.2s ease;
+}
+
+.fav-btn:hover {
+    background-color: rgba(226, 226, 226, 0.7);
+}
